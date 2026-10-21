@@ -1,12 +1,14 @@
 import urllib.error
-from unittest.mock import patch
+from email.message import Message
+from typing import Any
+from unittest.mock import MagicMock, patch
 
 import pytest
 from bandcamp_api import (
     BandcampError,
-    _extract_json_attr,
-    _extract_meta_content,
-    _extract_tags,
+    extract_json_attr,
+    extract_meta_content,
+    extract_tags,
     get_band_releases,
     get_release,
     search,
@@ -43,8 +45,8 @@ TAGS_HTML = """
 RELEASE_PAGE_WITH_TAGS_HTML = TRALBUM_HTML + TAGS_HTML
 
 
-def test_extract_json_attr_parses_music_grid():
-    result = _extract_json_attr(MUSIC_GRID_HTML, "data-client-items")
+def test_extract_json_attr_parses_music_grid() -> None:
+    result = extract_json_attr(MUSIC_GRID_HTML, "data-client-items")
     assert result == [
         {
             "art_id": 123,
@@ -56,20 +58,20 @@ def test_extract_json_attr_parses_music_grid():
     ]
 
 
-def test_extract_json_attr_parses_tralbum():
-    result = _extract_json_attr(TRALBUM_HTML, "data-tralbum")
+def test_extract_json_attr_parses_tralbum() -> None:
+    result = extract_json_attr(TRALBUM_HTML, "data-tralbum")
     assert result["artist"] == "An Artist"
     assert result["trackinfo"][0]["title"] == "Track One"
 
 
-def test_extract_json_attr_raises_when_attribute_missing():
+def test_extract_json_attr_raises_when_attribute_missing() -> None:
     with pytest.raises(BandcampError, match="data-client-items"):
-        _extract_json_attr("<html><body>not found</body></html>", "data-client-items")
+        extract_json_attr("<html><body>not found</body></html>", "data-client-items")
 
 
 @patch("bandcamp_api.urllib.request.urlopen")
-def test_search_sends_post_body_and_user_agent(mock_urlopen):
-    payload = {"auto": {"results": []}}
+def test_search_sends_post_body_and_user_agent(mock_urlopen: MagicMock) -> None:
+    payload: dict[str, Any] = {"auto": {"results": []}}
     with patch("bandcamp_api.json.load", return_value=payload):
         search("aphex twin")
 
@@ -83,8 +85,8 @@ def test_search_sends_post_body_and_user_agent(mock_urlopen):
 
 
 @patch("bandcamp_api.urllib.request.urlopen")
-def test_search_returns_results_list(_mock_urlopen):
-    payload = {
+def test_search_returns_results_list(mock_urlopen: MagicMock) -> None:
+    payload: dict[str, Any] = {
         "auto": {
             "results": [
                 {"type": "b", "name": "Aphex Twin", "item_url_root": "https://x"}
@@ -93,37 +95,40 @@ def test_search_returns_results_list(_mock_urlopen):
     }
     with patch("bandcamp_api.json.load", return_value=payload):
         result = search("aphex twin")
+    mock_urlopen.assert_called_once()
     assert result == [{"type": "b", "name": "Aphex Twin", "item_url_root": "https://x"}]
 
 
 @patch("bandcamp_api.urllib.request.urlopen")
-def test_search_slices_to_per_page(_mock_urlopen):
+def test_search_slices_to_per_page(mock_urlopen: MagicMock) -> None:
     per_page = 3
-    payload = {"auto": {"results": [{"id": i} for i in range(10)]}}
+    payload: dict[str, Any] = {"auto": {"results": [{"id": i} for i in range(10)]}}
     with patch("bandcamp_api.json.load", return_value=payload):
         result = search("query", per_page=per_page)
+    mock_urlopen.assert_called_once()
     assert len(result) == per_page
 
 
 @patch("bandcamp_api.urllib.request.urlopen")
-def test_search_raises_bandcamp_error_on_http_error(mock_urlopen):
+def test_search_raises_bandcamp_error_on_http_error(mock_urlopen: MagicMock) -> None:
     mock_urlopen.side_effect = urllib.error.HTTPError(
-        url="", code=500, msg="Server Error", hdrs=None, fp=None
+        url="", code=500, msg="Server Error", hdrs=Message(), fp=None
     )
     with pytest.raises(BandcampError):
         search("query")
 
 
 @patch("bandcamp_api.urllib.request.urlopen")
-def test_search_raises_bandcamp_error_on_url_error(mock_urlopen):
+def test_search_raises_bandcamp_error_on_url_error(mock_urlopen: MagicMock) -> None:
     mock_urlopen.side_effect = urllib.error.URLError("no network")
     with pytest.raises(BandcampError):
         search("query")
 
 
 @patch("bandcamp_api._fetch_html", return_value=MUSIC_GRID_HTML)
-def test_get_band_releases_returns_parsed_list(_mock_fetch):
+def test_get_band_releases_returns_parsed_list(mock_fetch: MagicMock) -> None:
     result = get_band_releases("https://aphextwin.bandcamp.com")
+    mock_fetch.assert_called_once()
     assert result == [
         {
             "art_id": 123,
@@ -136,7 +141,7 @@ def test_get_band_releases_returns_parsed_list(_mock_fetch):
 
 
 @patch("bandcamp_api._fetch_html")
-def test_get_band_releases_is_cached_across_calls(mock_fetch):
+def test_get_band_releases_is_cached_across_calls(mock_fetch: MagicMock) -> None:
     mock_fetch.return_value = MUSIC_GRID_HTML
     get_band_releases("https://cached-band.bandcamp.com")
     get_band_releases("https://cached-band.bandcamp.com")
@@ -144,64 +149,70 @@ def test_get_band_releases_is_cached_across_calls(mock_fetch):
 
 
 @patch("bandcamp_api._fetch_html", side_effect=BandcampError("boom"))
-def test_get_band_releases_propagates_fetch_error(_mock_fetch):
+def test_get_band_releases_propagates_fetch_error(mock_fetch: MagicMock) -> None:
     with pytest.raises(BandcampError, match="boom"):
         get_band_releases("https://broken.bandcamp.com")
+    mock_fetch.assert_called_once()
 
 
-def test_extract_meta_content_finds_og_site_name():
-    result = _extract_meta_content(RELEASE_PAGE_HTML, "og:site_name")
+def test_extract_meta_content_finds_og_site_name() -> None:
+    result = extract_meta_content(RELEASE_PAGE_HTML, "og:site_name")
     assert result == "A Label"
 
 
-def test_extract_meta_content_returns_none_when_missing():
-    result = _extract_meta_content("<html></html>", "og:site_name")
+def test_extract_meta_content_returns_none_when_missing() -> None:
+    result = extract_meta_content("<html></html>", "og:site_name")
     assert result is None
 
 
-def test_extract_tags_parses_tag_anchors():
-    result = _extract_tags(RELEASE_PAGE_WITH_TAGS_HTML)
+def test_extract_tags_parses_tag_anchors() -> None:
+    result = extract_tags(RELEASE_PAGE_WITH_TAGS_HTML)
     assert result == ["electronic", "United Kingdom"]
 
 
-def test_extract_tags_returns_empty_list_when_missing():
-    result = _extract_tags(TRALBUM_HTML)
+def test_extract_tags_returns_empty_list_when_missing() -> None:
+    result = extract_tags(TRALBUM_HTML)
     assert result == []
 
 
 @patch("bandcamp_api._fetch_html", return_value=RELEASE_PAGE_WITH_TAGS_HTML)
-def test_get_release_includes_tags(_mock_fetch):
+def test_get_release_includes_tags(mock_fetch: MagicMock) -> None:
     result = get_release("https://artist.bandcamp.com/album/a-release")
+    mock_fetch.assert_called_once()
     assert result["tags"] == ["electronic", "United Kingdom"]
 
 
 @patch("bandcamp_api._fetch_html", return_value=TRALBUM_HTML)
-def test_get_release_omits_tags_when_none_found(_mock_fetch):
+def test_get_release_omits_tags_when_none_found(mock_fetch: MagicMock) -> None:
     result = get_release("https://plain2.bandcamp.com/album/a-release")
+    mock_fetch.assert_called_once()
     assert "tags" not in result
 
 
 @patch("bandcamp_api._fetch_html", return_value=TRALBUM_HTML)
-def test_get_release_returns_parsed_tralbum(_mock_fetch):
+def test_get_release_returns_parsed_tralbum(mock_fetch: MagicMock) -> None:
     result = get_release("https://artist.bandcamp.com/album/a-release")
+    mock_fetch.assert_called_once()
     assert result["artist"] == "An Artist"
     assert len(result["trackinfo"]) == 1
 
 
 @patch("bandcamp_api._fetch_html", return_value=RELEASE_PAGE_HTML)
-def test_get_release_includes_site_name(_mock_fetch):
+def test_get_release_includes_site_name(mock_fetch: MagicMock) -> None:
     result = get_release("https://label.bandcamp.com/album/a-release")
+    mock_fetch.assert_called_once()
     assert result["site_name"] == "A Label"
 
 
 @patch("bandcamp_api._fetch_html", return_value=TRALBUM_HTML)
-def test_get_release_omits_site_name_when_meta_missing(_mock_fetch):
+def test_get_release_omits_site_name_when_meta_missing(mock_fetch: MagicMock) -> None:
     result = get_release("https://plain.bandcamp.com/album/a-release")
+    mock_fetch.assert_called_once()
     assert "site_name" not in result
 
 
 @patch("bandcamp_api._fetch_html")
-def test_get_release_is_cached_across_calls(mock_fetch):
+def test_get_release_is_cached_across_calls(mock_fetch: MagicMock) -> None:
     mock_fetch.return_value = TRALBUM_HTML
     get_release("https://cached-release.bandcamp.com/album/x")
     get_release("https://cached-release.bandcamp.com/album/x")

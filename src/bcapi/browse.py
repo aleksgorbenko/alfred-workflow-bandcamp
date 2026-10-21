@@ -2,21 +2,23 @@ import os
 import sys
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
+from typing import Any
 
 import bandcamp_api
-import images
 from alfred_items import TYPE_ICONS, emit, error_item, item
 from bandcamp_api import BandcampError
+
+import images
 
 TAG_LIMIT = 3
 DETAIL_WORKERS = 8
 
 
-def _icon_type(entry: dict) -> str:
+def _icon_type(entry: dict[str, Any]) -> str:
     return "track" if entry.get("type") == "track" else "album"
 
 
-def _title(entry: dict) -> str:
+def _title(entry: dict[str, Any]) -> str:
     artist = entry.get("artist")
     return f"{artist} - {entry['title']}" if artist else entry["title"]
 
@@ -29,7 +31,7 @@ def _absolute_url(band_url: str, page_url: str) -> str:
     )
 
 
-def _thumb_url(entry: dict) -> str | None:
+def _thumb_url(entry: dict[str, Any]) -> str | None:
     art_id = entry.get("art_id")
     return f"https://f4.bcbits.com/img/a{art_id}_9.jpg" if art_id else None
 
@@ -48,12 +50,12 @@ def _fetch_tags(urls: list[str]) -> dict[str, list[str]]:
     return tags_by_url
 
 
-def _subtitle(entry: dict, tags: list[str]) -> str:
+def _subtitle(entry: dict[str, Any], tags: list[str]) -> str:
     parts = [_icon_type(entry).title(), ", ".join(tags[:TAG_LIMIT])]
     return "・".join(part for part in parts if part)
 
 
-def build_items(entries: list[dict], band_url: str) -> list[dict]:
+def build_items(entries: list[dict[str, Any]], band_url: str) -> list[dict[str, Any]]:
     if not entries:
         return [item(title="No releases found", valid=False)]
 
@@ -61,14 +63,15 @@ def build_items(entries: list[dict], band_url: str) -> list[dict]:
     icons = images.warm(thumbs)
     page_urls = [_absolute_url(band_url, entry["page_url"]) for entry in entries]
     tags_by_url = _fetch_tags(page_urls)
-    items = []
+    items: list[dict[str, Any]] = []
     for entry, thumb, page_url in zip(entries, thumbs, page_urls, strict=True):
         items.append(
             item(
                 title=_title(entry),
                 subtitle=_subtitle(entry, tags_by_url.get(page_url, [])),
                 arg=page_url,
-                icon=icons.get(thumb) or TYPE_ICONS[_icon_type(entry)],
+                icon=(icons.get(thumb) if thumb else None)
+                or TYPE_ICONS[_icon_type(entry)],
                 variables={"BC_TYPE": "release", "BC_URL": page_url},
             )
         )
