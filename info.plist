@@ -363,7 +363,19 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>Search Bandcamp artists, labels, albums and tracks from Alfred.
+
+Type `bc` and a query to search Bandcamp as you type.
+
+![Bandcamp search results in Alfred](images/about/main.png)
+
+## Commands
+
+* `bc &lt;query&gt;` - search bands, labels, albums and tracks as you type.
+* Enter on a band or label - its releases.
+* Enter on an album or track - its tracklist.
+* Cmd+Enter - open the item's Bandcamp page.
+</string>
 	<key>uidata</key>
 	<dict>
 		<key>353A389C-DFA3-4DDC-B60E-3A8574DDE1F4</key>
