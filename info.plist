@@ -6,6 +6,19 @@
 	<string>dev.aleksgorbenko.alfred.bandcamp</string>
 	<key>connections</key>
 	<dict>
+		<key>0894A7F3-8652-4BB6-9661-6E1519ADAB8E</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7E73EC90-A233-4C91-B3DE-8A82B26E6B13</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>35E4C28B-6A90-4127-A6B6-7615F9D8B3A2</key>
 		<array>
 			<dict>
@@ -37,6 +50,19 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>353A389C-DFA3-4DDC-B60E-3A8574DDE1F4</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>7E73EC90-A233-4C91-B3DE-8A82B26E6B13</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>86BF46C1-8303-4ECD-9CD5-42852ECAC3DD</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -361,6 +387,101 @@
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>:bc</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Loading…</string>
+				<key>script</key>
+				<string>exec /bin/bash src/maintenance.sh --menu "search results, release pages and cover art"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>skipuniversalaction</key>
+				<true/>
+				<key>subtext</key>
+				<string>Cache size, empty cache</string>
+				<key>title</key>
+				<string>Bandcamp Maintenance</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>0894A7F3-8652-4BB6-9661-6E1519ADAB8E</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>exec /bin/bash src/maintenance.sh "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>7E73EC90-A233-4C91-B3DE-8A82B26E6B13</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>{const:alfred_workflow_name}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>86BF46C1-8303-4ECD-9CD5-42852ECAC3DD</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>Search Bandcamp artists, labels, albums and tracks from Alfred.
@@ -375,9 +496,22 @@ Type `bc` and a query to search Bandcamp as you type.
 * Enter on a band or label - its releases.
 * Enter on an album or track - its tracklist.
 * Cmd+Enter - open the item's Bandcamp page.
+
+## Maintenance
+
+* `:bc` - cache size (Enter reveals the folder) and Empty Cache.
 </string>
 	<key>uidata</key>
 	<dict>
+		<key>0894A7F3-8652-4BB6-9661-6E1519ADAB8E</key>
+		<dict>
+			<key>note</key>
+			<string>Maintenance: cache size, empty cache</string>
+			<key>xpos</key>
+			<integer>30</integer>
+			<key>ypos</key>
+			<integer>470</integer>
+		</dict>
 		<key>353A389C-DFA3-4DDC-B60E-3A8574DDE1F4</key>
 		<dict>
 			<key>note</key>
@@ -413,6 +547,20 @@ Type `bc` and a query to search Bandcamp as you type.
 			<integer>700</integer>
 			<key>ypos</key>
 			<integer>320</integer>
+		</dict>
+		<key>7E73EC90-A233-4C91-B3DE-8A82B26E6B13</key>
+		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
+			<key>ypos</key>
+			<integer>470</integer>
+		</dict>
+		<key>86BF46C1-8303-4ECD-9CD5-42852ECAC3DD</key>
+		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
+			<key>ypos</key>
+			<integer>470</integer>
 		</dict>
 		<key>A39A9928-B4E4-411E-B832-FCFE8201AC39</key>
 		<dict>

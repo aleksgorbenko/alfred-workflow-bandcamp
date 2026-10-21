@@ -35,6 +35,10 @@ Searches bands, labels, albums, and tracks as you type; no Enter needed.
 - Enter on a band/label drills into its releases; Enter on an album/track shows its tracklist.
 - Cmd+Enter at any point opens that item's Bandcamp page directly.
 
+### Maintenance
+
+- `:bc` - cache size (Enter reveals the folder) and Empty Cache.
+
 ## Install
 
 1. Download the latest `Bandcamp.alfredworkflow` from [Releases](https://github.com/aleksgorbenko/alfred-workflow-bandcamp/releases).
