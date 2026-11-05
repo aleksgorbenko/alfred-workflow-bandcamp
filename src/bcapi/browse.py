@@ -1,11 +1,11 @@
-import os
-import sys
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 import bandcamp_api
-from alfred_items import TYPE_ICONS, emit, error_item, item
+import names
+import router
+from alfred_items import HINT_OPEN, TYPE_ICONS, item, open_mod, with_hint
 from bandcamp_api import BandcampError
 
 import images
@@ -55,7 +55,13 @@ def _subtitle(entry: dict[str, Any], tags: list[str]) -> str:
     return "・".join(part for part in parts if part)
 
 
-def build_items(entries: list[dict[str, Any]], band_url: str) -> list[dict[str, Any]]:
+def _owner(entry: dict[str, Any], page_url: str) -> str:
+    return entry.get("artist") or router.split_url(page_url)[0]
+
+
+def build_items(
+    entries: list[dict[str, Any]], band: str, band_url: str
+) -> list[dict[str, Any]]:
     if not entries:
         return [item(title="No releases found", valid=False)]
 
@@ -63,36 +69,39 @@ def build_items(entries: list[dict[str, Any]], band_url: str) -> list[dict[str, 
     icons = images.warm(thumbs)
     page_urls = [_absolute_url(band_url, entry["page_url"]) for entry in entries]
     tags_by_url = _fetch_tags(page_urls)
+    host = router.split_url(band_url)[0]
+    owners = [
+        band if router.split_url(page_url)[0] == host else _owner(entry, page_url)
+        for entry, page_url in zip(entries, page_urls, strict=True)
+    ]
+    names.remember(
+        {
+            key: value
+            for entry, page_url, owner in zip(entries, page_urls, owners, strict=True)
+            for key, value in (
+                (names.band_key(owner), router.split_url(page_url)[0]),
+                (
+                    names.release_key(router.split_url(page_url)[0], entry["title"]),
+                    router.split_url(page_url)[1],
+                ),
+            )
+        }
+    )
     items: list[dict[str, Any]] = []
-    for entry, thumb, page_url in zip(entries, thumbs, page_urls, strict=True):
+    for entry, thumb, page_url, owner in zip(
+        entries, thumbs, page_urls, owners, strict=True
+    ):
         items.append(
             item(
                 title=_title(entry),
-                subtitle=_subtitle(entry, tags_by_url.get(page_url, [])),
-                arg=page_url,
+                subtitle=with_hint(
+                    _subtitle(entry, tags_by_url.get(page_url, [])), HINT_OPEN
+                ),
+                valid=False,
+                autocomplete=router.drill(owner, entry["title"]),
                 icon=(icons.get(thumb) if thumb else None)
                 or TYPE_ICONS[_icon_type(entry)],
-                variables={"BC_TYPE": "release", "BC_URL": page_url},
+                mods=open_mod(page_url),
             )
         )
     return items
-
-
-def main() -> None:
-    bc_type = os.environ.get("BC_TYPE", "")
-    bc_url = os.environ.get("BC_URL", "")
-    if bc_type != "band" or not bc_url:
-        emit([error_item("No selection to browse")])
-        return
-
-    try:
-        entries = bandcamp_api.get_band_releases(bc_url)
-    except BandcampError as error:
-        emit([error_item(str(error))])
-        return
-
-    emit(build_items(entries, bc_url))
-
-
-if __name__ == "__main__":
-    sys.exit(main())

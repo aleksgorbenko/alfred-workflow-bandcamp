@@ -30,14 +30,19 @@ Alfred Workflow to browse [Bandcamp](https://bandcamp.com). Bandcamp has no publ
 
 ### `bc <query>` - search Bandcamp
 
-Searches bands, labels, albums, and tracks as you type; no Enter needed.
+Searches bands, labels, albums and tracks as you type.
 
-- Enter on a band/label drills into its releases; Enter on an album/track shows its tracklist.
-- Cmd+Enter at any point opens that item's Bandcamp page directly.
+### Navigation
+
+- `↩` or `⇥` on a band or label opens its releases; on an album or track opens its tracklist.
+- The path builds up in the search box (`bc Keeno > Courage EP`); delete the last part to go back.
+- The first row of a page is the page itself: `↩` opens it in the browser, `⇥` goes back.
+- Words after a path filter that page.
+- `⌥↩` on any row opens its Bandcamp page.
 
 ### Maintenance
 
-- `:bc` - cache size (Enter reveals the folder) and Empty Cache.
+- `:bc` - cache size (`↩` reveals the folder) and Empty Cache.
 
 ## Install
 

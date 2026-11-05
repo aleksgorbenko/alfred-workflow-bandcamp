@@ -19,45 +19,6 @@
 				<false/>
 			</dict>
 		</array>
-		<key>35E4C28B-6A90-4127-A6B6-7615F9D8B3A2</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>A39A9928-B4E4-411E-B832-FCFE8201AC39</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
-		<key>765DEF8D-329D-426B-9E71-6EDD97318228</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>7B160A6A-C688-40C6-899B-05D308392883</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
-		<key>7B160A6A-C688-40C6-899B-05D308392883</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>353A389C-DFA3-4DDC-B60E-3A8574DDE1F4</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
 		<key>7E73EC90-A233-4C91-B3DE-8A82B26E6B13</key>
 		<array>
 			<dict>
@@ -71,34 +32,11 @@
 				<false/>
 			</dict>
 		</array>
-		<key>A39A9928-B4E4-411E-B832-FCFE8201AC39</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>765DEF8D-329D-426B-9E71-6EDD97318228</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
-				<string>353A389C-DFA3-4DDC-B60E-3A8574DDE1F4</string>
-				<key>modifiers</key>
-				<integer>1048576</integer>
-				<key>modifiersubtext</key>
-				<string>Open in browser</string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
 		<key>CF74A68E-92A2-4DD4-80BB-EB15469600DC</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>E6993E49-E9D6-4A73-9FE4-0DD4B92BDB40</string>
+				<string>353A389C-DFA3-4DDC-B60E-3A8574DDE1F4</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -110,34 +48,9 @@
 				<key>destinationuid</key>
 				<string>353A389C-DFA3-4DDC-B60E-3A8574DDE1F4</string>
 				<key>modifiers</key>
-				<integer>1048576</integer>
+				<integer>524288</integer>
 				<key>modifiersubtext</key>
 				<string>Open in browser</string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
-		<key>E6993E49-E9D6-4A73-9FE4-0DD4B92BDB40</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>35E4C28B-6A90-4127-A6B6-7615F9D8B3A2</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>sourceoutputuid</key>
-				<string>79D90348-339E-46CF-B232-1B87A7CBD8EB</string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
-				<string>765DEF8D-329D-426B-9E71-6EDD97318228</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
 				<key>vitoclose</key>
 				<false/>
 			</dict>
@@ -179,15 +92,15 @@
 				<key>queuemode</key>
 				<integer>2</integer>
 				<key>runningsubtext</key>
-				<string>Searching Bandcamp…</string>
+				<string>Loading Bandcamp…</string>
 				<key>script</key>
-				<string>python3 src/bcapi/search.py "$1"</string>
+				<string>python3 src/bcapi/app.py "$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>bc — live search bands, labels, albums &amp; tracks on Bandcamp</string>
+				<string>bc — search bands, labels, albums &amp; tracks; ↩ drills into bands and releases</string>
 				<key>title</key>
 				<string>Search Bandcamp</string>
 				<key>type</key>
@@ -199,104 +112,6 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>CF74A68E-92A2-4DD4-80BB-EB15469600DC</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>alfredfiltersresults</key>
-				<true/>
-				<key>alfredfiltersresultsmatchmode</key>
-				<integer>0</integer>
-				<key>argumenttreatemptyqueryasnil</key>
-				<true/>
-				<key>argumenttrimmode</key>
-				<integer>0</integer>
-				<key>argumenttype</key>
-				<integer>1</integer>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>keyword</key>
-				<string></string>
-				<key>queuedelaycustom</key>
-				<integer>3</integer>
-				<key>queuedelayimmediatelyinitially</key>
-				<true/>
-				<key>queuedelaymode</key>
-				<integer>0</integer>
-				<key>queuemode</key>
-				<integer>1</integer>
-				<key>runningsubtext</key>
-				<string>Loading releases…</string>
-				<key>script</key>
-				<string>python3 src/bcapi/browse.py</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>subtext</key>
-				<string>Releases for the selected band/label</string>
-				<key>title</key>
-				<string>Browse Releases</string>
-				<key>type</key>
-				<integer>0</integer>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>A39A9928-B4E4-411E-B832-FCFE8201AC39</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>alfredfiltersresults</key>
-				<true/>
-				<key>alfredfiltersresultsmatchmode</key>
-				<integer>0</integer>
-				<key>argumenttreatemptyqueryasnil</key>
-				<true/>
-				<key>argumenttrimmode</key>
-				<integer>0</integer>
-				<key>argumenttype</key>
-				<integer>1</integer>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>keyword</key>
-				<string></string>
-				<key>queuedelaycustom</key>
-				<integer>3</integer>
-				<key>queuedelayimmediatelyinitially</key>
-				<true/>
-				<key>queuedelaymode</key>
-				<integer>0</integer>
-				<key>queuemode</key>
-				<integer>1</integer>
-				<key>runningsubtext</key>
-				<string>Loading tracklist…</string>
-				<key>script</key>
-				<string>python3 src/bcapi/tracklist.py</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>subtext</key>
-				<string>Tracklist for the selected release</string>
-				<key>title</key>
-				<string>Tracklist</string>
-				<key>type</key>
-				<integer>0</integer>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>7B160A6A-C688-40C6-899B-05D308392883</string>
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
@@ -324,66 +139,44 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argument</key>
-				<string></string>
-				<key>passthroughargument</key>
+				<key>concurrently</key>
 				<false/>
-				<key>variables</key>
-				<dict/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>exec /bin/bash src/maintenance.sh "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.utility.argument</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>35E4C28B-6A90-4127-A6B6-7615F9D8B3A2</string>
+			<string>7E73EC90-A233-4C91-B3DE-8A82B26E6B13</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argument</key>
-				<string></string>
-				<key>passthroughargument</key>
+				<key>lastpathcomponent</key>
 				<false/>
-				<key>variables</key>
-				<dict/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>{const:alfred_workflow_name}</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.utility.argument</string>
+			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
-			<string>765DEF8D-329D-426B-9E71-6EDD97318228</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>conditions</key>
-				<array>
-					<dict>
-						<key>inputstring</key>
-						<string>{var:BC_TYPE}</string>
-						<key>matchcasesensitive</key>
-						<false/>
-						<key>matchmode</key>
-						<integer>0</integer>
-						<key>matchstring</key>
-						<string>band</string>
-						<key>outputlabel</key>
-						<string>band</string>
-						<key>uid</key>
-						<string>79D90348-339E-46CF-B232-1B87A7CBD8EB</string>
-					</dict>
-				</array>
-				<key>elselabel</key>
-				<string>release</string>
-				<key>hideelse</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.conditional</string>
-			<key>uid</key>
-			<string>E6993E49-E9D6-4A73-9FE4-0DD4B92BDB40</string>
+			<string>86BF46C1-8303-4ECD-9CD5-42852ECAC3DD</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -438,68 +231,26 @@
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>exec /bin/bash src/maintenance.sh "$1"</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>7E73EC90-A233-4C91-B3DE-8A82B26E6B13</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>{const:alfred_workflow_name}</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>86BF46C1-8303-4ECD-9CD5-42852ECAC3DD</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
 	</array>
 	<key>readme</key>
-	<string>Search Bandcamp artists, labels, albums and tracks from Alfred.
+	<string>## Usage
+
+Search Bandcamp artists, labels, albums and tracks via the `bc` keyword.
 
 Type `bc` and a query to search Bandcamp as you type.
 
 ![Bandcamp search results in Alfred](images/about/main.png)
 
-## Commands
-
 * `bc &lt;query&gt;` - search bands, labels, albums and tracks as you type.
-* Enter on a band or label - its releases.
-* Enter on an album or track - its tracklist.
-* Cmd+Enter - open the item's Bandcamp page.
+* &lt;kbd&gt;↩&lt;/kbd&gt; or &lt;kbd&gt;⇥&lt;/kbd&gt; on a band or label - its releases; on an album or track - its tracklist.
+* The path builds up in the search box (`bc Keeno &gt; Courage EP`); delete the last part to go back.
+* The first row of a page is the page itself: &lt;kbd&gt;↩&lt;/kbd&gt; opens it in the browser, &lt;kbd&gt;⇥&lt;/kbd&gt; goes back.
+* Type after a path to filter that page.
+* &lt;kbd&gt;⌥&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; - open the item's Bandcamp page.
 
-## Maintenance
+### Maintenance
 
-* `:bc` - cache size (Enter reveals the folder) and Empty Cache.
+* `:bc` - cache size (&lt;kbd&gt;↩&lt;/kbd&gt; reveals the folder) and Empty Cache.
 </string>
 	<key>uidata</key>
 	<dict>
@@ -521,33 +272,6 @@ Type `bc` and a query to search Bandcamp as you type.
 			<key>ypos</key>
 			<integer>180</integer>
 		</dict>
-		<key>35E4C28B-6A90-4127-A6B6-7615F9D8B3A2</key>
-		<dict>
-			<key>note</key>
-			<string>Clear query before Browse Releases (its arg carried the previous row's url).</string>
-			<key>xpos</key>
-			<integer>540</integer>
-			<key>ypos</key>
-			<integer>40</integer>
-		</dict>
-		<key>765DEF8D-329D-426B-9E71-6EDD97318228</key>
-		<dict>
-			<key>note</key>
-			<string>Clear query before Tracklist (fed by Browse Releases/Conditional-else, each arg carried the previous row's url).</string>
-			<key>xpos</key>
-			<integer>540</integer>
-			<key>ypos</key>
-			<integer>320</integer>
-		</dict>
-		<key>7B160A6A-C688-40C6-899B-05D308392883</key>
-		<dict>
-			<key>note</key>
-			<string>No keyword, chained only, leaf. Shows tracks for the selected release (parsed from that release's page). Enter opens the bandcamp.com page.</string>
-			<key>xpos</key>
-			<integer>700</integer>
-			<key>ypos</key>
-			<integer>320</integer>
-		</dict>
 		<key>7E73EC90-A233-4C91-B3DE-8A82B26E6B13</key>
 		<dict>
 			<key>xpos</key>
@@ -562,30 +286,12 @@ Type `bc` and a query to search Bandcamp as you type.
 			<key>ypos</key>
 			<integer>470</integer>
 		</dict>
-		<key>A39A9928-B4E4-411E-B832-FCFE8201AC39</key>
-		<dict>
-			<key>note</key>
-			<string>No keyword, chained only. Lists releases for the selected band/label (parsed from that band's page). Enter shows Tracklist, Cmd+Enter opens the page.</string>
-			<key>xpos</key>
-			<integer>700</integer>
-			<key>ypos</key>
-			<integer>40</integer>
-		</dict>
 		<key>CF74A68E-92A2-4DD4-80BB-EB15469600DC</key>
 		<dict>
 			<key>note</key>
-			<string>bc — live search Bandcamp (band/label/album/track). Enter routes to Conditional to drill down, Cmd+Enter opens the bandcamp.com page.</string>
+			<string>bc — live search Bandcamp (band/label/album/track). Enter drills down, Option+Enter opens the bandcamp.com page.</string>
 			<key>xpos</key>
 			<integer>40</integer>
-			<key>ypos</key>
-			<integer>40</integer>
-		</dict>
-		<key>E6993E49-E9D6-4A73-9FE4-0DD4B92BDB40</key>
-		<dict>
-			<key>note</key>
-			<string>No keyword. Routes bcs's mixed-type result by BC_TYPE variable: band → Browse Releases, else (release) → Tracklist.</string>
-			<key>xpos</key>
-			<integer>380</integer>
 			<key>ypos</key>
 			<integer>40</integer>
 		</dict>

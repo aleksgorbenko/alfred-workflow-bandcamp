@@ -1,0 +1,6 @@
+# name symbol background; rendered by make icons
+icon_band person.2.fill #1DA0C3
+icon_label building.2.fill #1DA0C3
+icon_album opticaldisc.fill #1DA0C3
+icon_track music.note #1DA0C3
+maintenance_clear trash.fill #FF453A

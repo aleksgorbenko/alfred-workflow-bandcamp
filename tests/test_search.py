@@ -1,11 +1,6 @@
-from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
-from bandcamp_api import BandcampError
-from search import LIVE_TYPING_TIMEOUT_SECONDS, build_items, main
-
-if TYPE_CHECKING:
-    import pytest
+from search import LIVE_TYPING_TIMEOUT_SECONDS, build_items
 
 DEFAULT_TIMEOUT_SECONDS = 5
 
@@ -34,13 +29,11 @@ def test_build_items_band_row() -> None:
     ]
     result = build_items(entries)[0]
     assert result["title"] == "Aphex Twin"
-    assert result["subtitle"] == "Band"
-    assert result["arg"] == "https://aphextwin.bandcamp.com"
+    assert result["subtitle"] == "Band · ⌥↩ Open in browser"
+    assert result["valid"] is False
+    assert result["autocomplete"] == "Aphex Twin > "
+    assert result["mods"]["alt"]["arg"] == "https://aphextwin.bandcamp.com"
     assert result["icon"] == {"path": "/cache/a.jpg"}
-    assert result["variables"] == {
-        "BC_TYPE": "band",
-        "BC_URL": "https://aphextwin.bandcamp.com",
-    }
 
 
 @patch("search.images.warm", new=MagicMock(return_value={}))
@@ -54,7 +47,7 @@ def test_build_items_label_row_shows_label_subtitle() -> None:
         }
     ]
     result = build_items(entries)[0]
-    assert result["subtitle"] == "Label"
+    assert result["subtitle"] == "Label · ⌥↩ Open in browser"
     assert result["icon"] == {"path": "icons/icon_label.png"}
 
 
@@ -71,12 +64,9 @@ def test_build_items_album_row_prefixes_band_name() -> None:
     ]
     result = build_items(entries)[0]
     assert result["title"] == "Aphex Twin - Drukqs"
-    assert result["subtitle"] == "Album"
-    assert result["arg"] == "https://aphextwin.bandcamp.com/album/drukqs"
-    assert result["variables"] == {
-        "BC_TYPE": "release",
-        "BC_URL": "https://aphextwin.bandcamp.com/album/drukqs",
-    }
+    assert result["subtitle"] == "Album · ⌥↩ Open in browser"
+    assert result["autocomplete"] == "Aphex Twin > Drukqs > "
+    assert result["mods"]["alt"]["arg"] == "https://aphextwin.bandcamp.com/album/drukqs"
 
 
 @patch("search.images.warm", new=MagicMock(return_value={}))
@@ -91,7 +81,9 @@ def test_build_items_album_row_includes_tags() -> None:
         }
     ]
     result = build_items(entries)[0]
-    assert result["subtitle"] == "Album・Electronic, United Kingdom"
+    assert (
+        result["subtitle"] == "Album・Electronic, United Kingdom · ⌥↩ Open in browser"
+    )
 
 
 @patch("search.images.warm", new=MagicMock(return_value={}))
@@ -106,7 +98,10 @@ def test_build_items_album_row_caps_tags_at_three() -> None:
         }
     ]
     result = build_items(entries)[0]
-    assert result["subtitle"] == "Album・Electronic, IDM, Experimental"
+    assert (
+        result["subtitle"]
+        == "Album・Electronic, IDM, Experimental · ⌥↩ Open in browser"
+    )
 
 
 @patch("search.images.warm", new=MagicMock(return_value={}))
@@ -120,7 +115,7 @@ def test_build_items_album_row_without_tags_shows_plain_type() -> None:
         }
     ]
     result = build_items(entries)[0]
-    assert result["subtitle"] == "Album"
+    assert result["subtitle"] == "Album · ⌥↩ Open in browser"
 
 
 @patch("search.images.warm", new=MagicMock(return_value={}))
@@ -135,7 +130,7 @@ def test_build_items_track_row() -> None:
         }
     ]
     result = build_items(entries)[0]
-    assert result["subtitle"] == "Track"
+    assert result["subtitle"] == "Track · ⌥↩ Open in browser"
     assert result["icon"] == {"path": "icons/icon_track.png"}
 
 
@@ -150,21 +145,3 @@ def test_build_items_uses_short_timeout_for_live_typing(mock_warm: MagicMock) ->
         == LIVE_TYPING_TIMEOUT_SECONDS
         < DEFAULT_TIMEOUT_SECONDS
     )
-
-
-def test_main_prompts_on_empty_query(capsys: pytest.CaptureFixture[str]) -> None:
-    main([""])
-    out = capsys.readouterr().out
-    assert "Type to search" in out
-
-
-@patch("search.images.warm", return_value={})
-@patch("search.bandcamp_api.search", side_effect=BandcampError("boom"))
-def test_main_surfaces_bandcamp_error(
-    mock_search: MagicMock, mock_warm: MagicMock, capsys: pytest.CaptureFixture[str]
-) -> None:
-    main(["query"])
-    mock_search.assert_called_once()
-    mock_warm.assert_not_called()
-    out = capsys.readouterr().out
-    assert "boom" in out

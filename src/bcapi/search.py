@@ -1,9 +1,8 @@
-import sys
 from typing import Any
 
-import bandcamp_api
-from alfred_items import TYPE_ICONS, emit, error_item, item
-from bandcamp_api import BandcampError
+import names
+import router
+from alfred_items import HINT_OPEN, TYPE_ICONS, item, open_mod, with_hint
 
 import images
 
@@ -35,12 +34,23 @@ def _subtitle(entry: dict[str, Any]) -> str:
     return "・".join(part for part in parts if part)
 
 
-def _bc_type(entry: dict[str, Any]) -> str:
-    return "band" if entry["type"] == "b" else "release"
-
-
 def _url(entry: dict[str, Any]) -> str:
     return entry.get("item_url_path") or entry["item_url_root"]
+
+
+def _drill(entry: dict[str, Any]) -> str:
+    host, release = router.split_url(_url(entry))
+    if entry["type"] == "b":
+        names.remember({names.band_key(entry["name"]): host})
+        return router.drill(entry["name"])
+    band = entry.get("band_name") or host
+    names.remember(
+        {
+            names.band_key(band): host,
+            names.release_key(host, entry["name"]): release,
+        }
+    )
+    return router.drill(band, entry["name"])
 
 
 def build_items(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -54,29 +64,11 @@ def build_items(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [
         item(
             title=_title(entry),
-            subtitle=_subtitle(entry),
-            arg=_url(entry),
+            subtitle=with_hint(_subtitle(entry), HINT_OPEN),
+            valid=False,
+            autocomplete=_drill(entry),
             icon=icons.get(entry.get("img") or "") or TYPE_ICONS[_icon_type(entry)],
-            variables={"BC_TYPE": _bc_type(entry), "BC_URL": _url(entry)},
+            mods=open_mod(_url(entry)),
         )
         for entry in entries
     ]
-
-
-def main(argv: list[str]) -> None:
-    query = argv[0].strip() if argv else ""
-    if not query:
-        emit([item(title="Type to search Bandcamp…", valid=False)])
-        return
-
-    try:
-        entries = bandcamp_api.search(query)
-    except BandcampError as error:
-        emit([error_item(str(error))])
-        return
-
-    emit(build_items(entries))
-
-
-if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))

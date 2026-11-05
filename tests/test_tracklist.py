@@ -1,11 +1,6 @@
-from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
-from bandcamp_api import BandcampError
-from tracklist import build_items, main
-
-if TYPE_CHECKING:
-    import pytest
+from tracklist import build_items
 
 
 @patch("tracklist.images.warm", return_value={})
@@ -129,30 +124,3 @@ def test_build_items_falls_back_to_track_icon_without_art_id() -> None:
     release = {"trackinfo": [{"title": "Track One", "duration": 60}]}
     result = build_items(release, "https://x.bandcamp.com/album/a")[0]
     assert result["icon"] == {"path": "icons/icon_track.png"}
-
-
-@patch.dict("os.environ", {}, clear=True)
-def test_main_errors_when_no_selection(capsys: pytest.CaptureFixture[str]) -> None:
-    main()
-    out = capsys.readouterr().out
-    assert "selection" in out.lower()
-
-
-@patch.dict("os.environ", {"BC_URL": "https://broken.bandcamp.com/album/a"}, clear=True)
-@patch("tracklist.bandcamp_api.get_release", side_effect=BandcampError("boom"))
-def test_main_surfaces_bandcamp_error(
-    mock_get: MagicMock, capsys: pytest.CaptureFixture[str]
-) -> None:
-    main()
-    mock_get.assert_called_once()
-    out = capsys.readouterr().out
-    assert "boom" in out
-
-
-@patch.dict("os.environ", {"BC_URL": "https://x.bandcamp.com/album/a"}, clear=True)
-@patch("tracklist.images.warm", return_value={})
-@patch("tracklist.bandcamp_api.get_release", return_value={"trackinfo": []})
-def test_main_dispatches_with_bc_url(mock_get: MagicMock, mock_warm: MagicMock) -> None:
-    main()
-    mock_warm.assert_not_called()
-    mock_get.assert_called_once_with("https://x.bandcamp.com/album/a")

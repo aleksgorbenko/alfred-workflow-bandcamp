@@ -1,11 +1,7 @@
-import os
 import re
-import sys
 from typing import Any
 
-import bandcamp_api
-from alfred_items import emit, error_item, item
-from bandcamp_api import BandcampError
+from alfred_items import item
 
 import images
 
@@ -28,7 +24,7 @@ def _year(date_str: str | None) -> str:
     return match.group(0) if match else ""
 
 
-def _release_subtitle(release: dict[str, Any]) -> str:
+def release_subtitle(release: dict[str, Any]) -> str:
     artist = release.get("artist") or ""
     site_name = release.get("site_name") or ""
     label = site_name if site_name and site_name != artist else ""
@@ -52,13 +48,13 @@ def build_items(release: dict[str, Any], release_url: str) -> list[dict[str, Any
         return [item(title="No tracklist available", valid=False)]
 
     icon = _cover_icon(release)
-    release_subtitle = _release_subtitle(release)
+    summary = release_subtitle(release)
     return [
         item(
             title=_title(track),
             subtitle="・".join(
                 part
-                for part in (_duration(track.get("duration") or 0), release_subtitle)
+                for part in (_duration(track.get("duration") or 0), summary)
                 if part
             ),
             arg=release_url,
@@ -66,22 +62,3 @@ def build_items(release: dict[str, Any], release_url: str) -> list[dict[str, Any
         )
         for track in tracklist
     ]
-
-
-def main() -> None:
-    bc_url = os.environ.get("BC_URL", "")
-    if not bc_url:
-        emit([error_item("No selection to browse")])
-        return
-
-    try:
-        release = bandcamp_api.get_release(bc_url)
-    except BandcampError as error:
-        emit([error_item(str(error))])
-        return
-
-    emit(build_items(release, bc_url))
-
-
-if __name__ == "__main__":
-    sys.exit(main())
